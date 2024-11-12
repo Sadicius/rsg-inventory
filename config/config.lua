@@ -23,8 +23,13 @@ Config = {
     CleanupDropInterval = 1, -- in minutes
 
     ItemDropObject = `p_bag01x`,
-    ItemDropObjectBone = "SKEL_R_Finger00",
-    ItemDropObjectOffset = {
+    ItemDropObjectBoneLeft = "SKEL_R_Finger00",
+    ItemDropObjectOffsetLeft = {
+        vector3(0.380000, -0.04000, -0.0300000),
+        vector3(-5.000000, -95.000000, -90.000),
+    },
+    ItemDropObjectBoneRight = "SKEL_L_Finger00",
+    ItemDropObjectOffsetRight = {
         vector3(0.380000, -0.04000, -0.0300000),
         vector3(-5.000000, -95.000000, -90.000),
     },

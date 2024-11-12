@@ -2,21 +2,20 @@ fx_version 'cerulean'
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 game 'rdr3'
 
-lua54 'yes'
 
 description 'rsg-inventory'
 version '2.1.3'
 
 shared_scripts {
     '@rsg-core/shared/locale.lua',
-    'locales/en.lua',
+    'locales/es.lua',
     'locales/*.lua',
     'config/*.lua',
 }
 
 client_scripts {
     'client/main.lua',
-    'client/drops.lua'
+    'client/drops.lua',
 }
 
 server_scripts {
@@ -24,7 +23,6 @@ server_scripts {
     'server/main.lua',
     'server/functions.lua',
     'server/commands.lua',
-    'server/versionchecker.lua'
 }
 
 ui_page 'html/index.html'
@@ -38,3 +36,5 @@ files {
 }
 
 dependency 'rsg-weapons'
+
+lua54 'yes'

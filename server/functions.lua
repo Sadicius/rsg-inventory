@@ -349,7 +349,7 @@ exports('CanAddItem', CanAddItem)
 --- @return number - Returns the free weight of the players inventory. Error will return 0
 function GetFreeWeight(source)
     if not source then
-        warn('Source was not passed into GetFreeWeight')
+        warn("Source was not passed into GetFreeWeight")
         return 0
     end
     local Player = RSGCore.Functions.GetPlayer(source)
@@ -557,14 +557,14 @@ function OpenInventory(source, identifier, data)
     local inventory = Inventories[identifier]
 
     if inventory and inventory.isOpen then
-        TriggerClientEvent('ox_lib:notify', source, { title = 'This inventory is currently in use', type = 'error', duration = 5000 })
+        TriggerClientEvent('ox_lib:notify', source, {title = 'This inventory is currently in use', type = 'error', duration = 5000 })
         return
     end
 
     if not inventory then inventory = InitializeInventory(identifier, data) end
     inventory.maxweight = (data and data.maxweight) or (inventory and inventory.maxweight) or Config.StashSize.maxweight
     inventory.slots = (data and data.slots) or (inventory and inventory.slots) or Config.StashSize.slots
-    inventory.label = (data and data.label) or (inventory and inventory.label) or identifier
+    inventory.label = (data and data.label) or (inventory and inventory.label)  or identifier
     inventory.isOpen = source
 
     local formattedInventory = {

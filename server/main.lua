@@ -196,6 +196,31 @@ RegisterNetEvent('rsg-inventory:server:useItem', function(item)
             TriggerClientEvent('rsg-weapons:client:UseWeapon', src, itemData, itemData.info.quality and itemData.info.quality > 0)
             TriggerClientEvent('rsg-inventory:client:ItemBox', src, itemInfo, 'use')
         end
+    elseif itemData.name == 'id_card' then
+        UseItem(itemData.name, src, itemData)
+        TriggerClientEvent('rsg-inventory:client:ItemBox', source, itemInfo, 'use')
+        local playerPed = GetPlayerPed(src)
+        local playerCoords = GetEntityCoords(playerPed)
+        local players = RSGCore.Functions.GetPlayers()
+        local gender = item.info.gender == 0 and 'Male' or 'Female'
+        for _, v in pairs(players) do
+            local targetPed = GetPlayerPed(v)
+            local dist = #(playerCoords - GetEntityCoords(targetPed))
+            if dist < 3.0 then
+                TriggerClientEvent('chat:addMessage', v, {
+                    template = '<div class="chat-message advert" style="background: linear-gradient(to right, rgba(5, 5, 5, 0.6), #74807c); display: flex;"><div style="margin-right: 10px;"><i class="far fa-id-card" style="height: 100%;"></i><strong> {0}</strong><br> <strong>Civ ID:</strong> {1} <br><strong>First Name:</strong> {2} <br><strong>Last Name:</strong> {3} <br><strong>Birthdate:</strong> {4} <br><strong>Gender:</strong> {5} <br><strong>Nationality:</strong> {6}</div></div>',
+                    args = {
+                        'ID Card',
+                        item.info.citizenid,
+                        item.info.firstname,
+                        item.info.lastname,
+                        item.info.birthdate,
+                        gender,
+                        item.info.nationality
+                    }
+                })
+            end
+        end
     else
         UseItem(itemData.name, src, itemData)
         TriggerClientEvent('rsg-inventory:client:ItemBox', src, itemInfo, 'use')
@@ -284,11 +309,11 @@ RSGCore.Functions.CreateCallback('rsg-inventory:server:attemptPurchase', functio
     local amount = data.amount
     local shop = string.gsub(data.shop, 'shop%-', '')
     local price = itemInfo.price
-    local sinvtype = data.sourceinvtype
+	local sinvtype = data.sourceinvtype
+	if price then
+		price = itemInfo.price * amount
+	end
 
-    if price then
-        price = itemInfo.price * amount
-    end
     local Player = RSGCore.Functions.GetPlayer(source)
 
     if not Player then
@@ -319,25 +344,24 @@ RSGCore.Functions.CreateCallback('rsg-inventory:server:attemptPurchase', functio
     end
 
     if price then
-        if Player.PlayerData.money.cash >= price then
-
-            if sinvtype == 'player' then
-                TriggerClientEvent('ox_lib:notify', source, {title = 'This shop do not buy your items!', type = 'error', duration = 5000 })
-                cb(false)
-            else
-                Player.Functions.RemoveMoney('cash', price, 'shop-purchase')
-                AddItem(source, itemInfo.name, amount, nil, itemInfo.info, 'shop-purchase')
-                TriggerEvent('rsg-shops:server:UpdateShopItems', shop, itemInfo, amount)
-                cb(true)
-            end
-        else
-            TriggerClientEvent('ox_lib:notify', source, {title = 'You do not have enough money', type = 'error', duration = 5000 })
-            cb(false)
-        end
-    else
-        TriggerClientEvent('ox_lib:notify', source, {title = 'This shop do not buy your items!', type = 'error', duration = 5000 })
-        cb(false)
-    end
+		if Player.PlayerData.money.cash >= price then
+			if sinvtype == 'player' then
+				TriggerClientEvent('ox_lib:notify', source, {title = 'This shop do not buy your items!', type = 'error', duration = 5000 })
+				cb(false)
+			else
+				Player.Functions.RemoveMoney('cash', price, 'shop-purchase')
+				AddItem(source, itemInfo.name, amount, nil, itemInfo.info, 'shop-purchase')
+				TriggerEvent('rsg-shops:server:UpdateShopItems', shop, itemInfo, amount)
+				cb(true)
+			end
+		else
+			TriggerClientEvent('ox_lib:notify', source, {title = 'You do not have enough money', type = 'error', duration = 5000 })
+			cb(false)
+		end
+	else
+		TriggerClientEvent('ox_lib:notify', source, {title = 'This shop do not buy your items!', type = 'error', duration = 5000 })
+		cb(false)
+	end
 end)
 
 RSGCore.Functions.CreateCallback('rsg-inventory:server:giveItem', function(source, cb, target, item, amount, slot, info)
@@ -431,7 +455,6 @@ local function getItem(inventoryId, src, slot)
             items = Inventories[inventoryId]['items']
         end
     end
-
     for _, item in pairs(items) do
         if item.slot == slot then
             return item
