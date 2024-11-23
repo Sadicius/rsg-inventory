@@ -4,7 +4,7 @@ game 'rdr3'
 
 
 description 'rsg-inventory'
-version '2.1.3'
+version '2.1.5'
 
 shared_scripts {
     '@rsg-core/shared/locale.lua',
