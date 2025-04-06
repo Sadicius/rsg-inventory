@@ -21,14 +21,16 @@ CreateThread(function()
     }
 
     while true do
-        Wait(0)
-        for key, command in pairs(commands) do
-            if IsControlJustReleased(0, key) then
-                if Inventory.CanPlayerUseInventory() then
-                    ExecuteCommand(command)
-                end
+        local sleep = 0
+        Wait(sleep)
 
-                break
+        if Inventory.CanPlayerUseInventory() then
+            for key, command in pairs(commands) do
+                if IsControlJustReleased(0, key) then
+                    ExecuteCommand(command)
+                    sleep = 1000
+                    break
+                end
             end
         end
     end
@@ -42,12 +44,12 @@ CreateThread(function()
         Wait(0)
 
         for i = 1, #slots do
-            DisableControlAction(0, keybinds[i])
+            DisableControlAction(0, keybinds[tostring(i)])
         end
         
-        for i = 1, #slots do
-            if IsDisabledControlPressed(0, keybinds[i]) and IsInputDisabled(0) then
-                if Inventory.CanPlayerUseInventory() then
+        if Inventory.CanPlayerUseInventory() then
+            for i = 1, #slots do
+                if IsDisabledControlPressed(0, keybinds[tostring(i)]) and IsInputDisabled(0) then
                     ExecuteCommand(slots[i])
                 end
             end

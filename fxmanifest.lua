@@ -5,7 +5,7 @@ game 'rdr3'
 lua54 'yes'
 
 description 'rsg-inventory'
-version '2.3.9'
+version '2.3.8'
 
 shared_scripts {
     '@ox_lib/init.lua',
@@ -18,7 +18,7 @@ shared_scripts {
 
 client_scripts {
     'client/drops/functions.lua',
-    'client/functions.lua', 
+    'client/functions.lua',
     'client/commands.lua',
     'client/exports.lua',
     'client/events.lua',
