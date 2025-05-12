@@ -24,6 +24,7 @@ CreateThread(function()
         [RSGCore.Shared.Keybinds["4"]] = { command = "slot_4", disabled = true },
         [RSGCore.Shared.Keybinds["5"]] = { command = "slot_5", disabled = true }
     }
+
     while true do
         Wait(0)
         for key, data in pairs(commands) do
@@ -46,4 +47,5 @@ CreateThread(function()
         end
     end
 end)
+
 

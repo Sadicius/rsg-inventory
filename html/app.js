@@ -1,3 +1,5 @@
+// import {initLocale} from '@overextended/ox_lib/shared'
+
 const InventoryContainer = Vue.createApp({
     data() {
         return this.getInitialState();
@@ -898,7 +900,7 @@ const InventoryContainer = Vue.createApp({
                 this.notificationTimeout = null;
             }, 3000);
         },
-        /* showRequiredItem(data) {
+/*         showRequiredItem(data) {
             if (data.toggle) {
                 this.requiredItems = data.items;
                 this.showRequiredItems = true;
@@ -1002,7 +1004,7 @@ const InventoryContainer = Vue.createApp({
             const renderInfo = (obj, indent = 0) => {
                 let html = "";
                 for (const [key, value] of Object.entries(obj)) {
-                    if (key === "description" || key === "lastUpdate" || key === "componentshash" || key === "components") continue;
+                    if (key === "description" || key === "lastUpdate" || key === "componentshash") continue;
         
                     const padding = "&nbsp;".repeat(indent * 4);
 
@@ -1026,6 +1028,31 @@ const InventoryContainer = Vue.createApp({
         
             return content;
         },
+        /* generateTooltipContent(item) {
+            if (!item) {
+                return "";
+            }
+            let content = `<div class="custom-tooltip"><div class="tooltip-header">${item.label}</div><hr class="tooltip-divider">`;
+            const description = item.info && item.info.description ? item.info.description.replace(/\n/g, "<br>") : item.description ? item.description.replace(/\n/g, "<br>") : "No description available.";
+
+            if (item.info && Object.keys(item.info).length > 0) {
+                for (const [key, value] of Object.entries(item.info)) {
+                    if (key !== "description" && key !== "lastUpdate") {
+                        let valueStr = value;
+                        if (key === "attachments") {
+                            valueStr = Object.keys(value).length > 0 ? "true" : "false";
+                        }
+                        content += `<div class="tooltip-info"><span class="tooltip-info-key">${this.formatKey(key)}:</span> ${valueStr}</div>`;
+                    }
+                }
+            }
+
+            content += `<div class="tooltip-description">${description}</div>`;
+            content += `<div class="tooltip-weight"><i class="fas fa-weight-hanging"></i> ${item.weight !== undefined && item.weight !== null ? (item.weight / 1000).toFixed(1) : "N/A"}kg</div>`;
+
+            content += `</div>`;
+            return content;
+        }, */
         formatKey(key) {
             return key.replace(/_/g, " ").charAt(0).toUpperCase() + key.slice(1);
         },
@@ -1087,7 +1114,7 @@ const InventoryContainer = Vue.createApp({
                 case "itemBox":
                     this.showItemNotification(event.data);
                     break;
-                /* case "requiredItem":
+/*                 case "requiredItem":
                     this.showRequiredItem(event.data);
                     break; */
                 case "updateHotbar":
